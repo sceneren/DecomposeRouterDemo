@@ -7,18 +7,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.github.sceneren.common.route.MainStackScreens
 import io.github.xxfast.decompose.router.stack.Router
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
     router: Router<MainStackScreens>,
     onEnterMainScreen: () -> Unit
 ) {
+
+    LaunchedEffect(key1 = "1") {
+        delay(1000)
+        onEnterMainScreen.invoke()
+    }
 
     Scaffold { innerPadding ->
         Box(

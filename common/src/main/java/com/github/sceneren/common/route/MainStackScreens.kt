@@ -11,5 +11,9 @@ sealed class MainStackScreens {
     data object Main : MainStackScreens()
 
     @Serializable
+    data object Login : MainStackScreens()
+
+    @Serializable
     data object Detail : MainStackScreens()
+
 }

@@ -28,7 +28,7 @@ fun DetailScreen() {
                 modifier = Modifier.clickable {
 
                 },
-                text = "这是启动页"
+                text = "这是详情"
             )
         }
     }

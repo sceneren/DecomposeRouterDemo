@@ -1,23 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.github.sceneren.decomposerouterdemo"
+    namespace = "com.github.sceneren.login"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.github.sceneren.decomposerouterdemo"
         minSdk = 25
-        //noinspection EditedTargetSdkVersion
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -42,13 +38,7 @@ android {
 }
 
 dependencies {
-
     implementation(project(":common"))
-    implementation(project(":features:login"))
-    implementation(project(":features:featureA"))
-    implementation(project(":features:featureB"))
-    implementation(project(":features:featureC"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -57,6 +47,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

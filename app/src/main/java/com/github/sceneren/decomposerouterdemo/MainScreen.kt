@@ -2,6 +2,8 @@ package com.github.sceneren.decomposerouterdemo
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
@@ -10,6 +12,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.router.pages.select
 import com.arkivanov.decompose.router.pages.selectFirst
@@ -21,6 +24,7 @@ import io.github.xxfast.decompose.router.pages.RoutedContent
 import io.github.xxfast.decompose.router.pages.Router
 import io.github.xxfast.decompose.router.pages.pagesOf
 import io.github.xxfast.decompose.router.pages.rememberRouter
+import io.github.xxfast.decompose.router.rememberOnRoute
 
 @Composable
 fun MainScreen() {
@@ -59,7 +63,20 @@ fun MainScreen() {
             }
         }
     ) { innerPadding ->
-        RoutedContent(modifier = Modifier.padding(innerPadding), router = pager) { page ->
+        RoutedContent(
+            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
+            router = pager,
+            pager = { modifier, state, key, pageContent ->
+                HorizontalPager(
+                    modifier = modifier,
+                    state = state,
+                    key = key,
+                    pageContent = pageContent,
+                    userScrollEnabled = false,
+                    beyondViewportPageCount = 0
+                )
+            }
+        ) { page ->
             when (page) {
                 MainPagerScreens.Page1 -> FeatureAHomeScreen()
                 MainPagerScreens.Page2 -> FeatureBHomeScreen()
