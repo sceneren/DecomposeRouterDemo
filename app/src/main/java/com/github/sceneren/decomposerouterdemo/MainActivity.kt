@@ -17,6 +17,7 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import com.github.sceneren.common.route.LocalStackRouter
 import com.github.sceneren.common.route.MainStackScreens
 import com.github.sceneren.decomposerouterdemo.ui.theme.DecomposeRouterDemoTheme
+import com.github.sceneren.featurea.camera.CameraScreen
 import com.github.sceneren.login.LoginScreen
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.RouterContext
@@ -69,6 +70,7 @@ class MainActivity : ComponentActivity() {
                                     MainStackScreens.Main -> MainScreen()
                                     MainStackScreens.Detail -> DetailScreen()
                                     MainStackScreens.Login -> LoginScreen()
+                                    MainStackScreens.Camera -> CameraScreen()
                                 }
                             }
                         }

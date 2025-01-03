@@ -55,9 +55,9 @@ fun FeatureAHomeScreen() {
     val vm: FeatureAVM = viewModel()
     val vmState by vm.collectAsState()
 
-    val listState = rememberOnRoute {
-        LazyListState()
-    }
+//    val listState = rememberOnRoute {
+//        LazyListState()
+//    }
 
     val dialogRouter: Router<DialogScreens> = rememberRouter { null }
     val bottomSheet1Router: Router<BottomSheet1Screens> = rememberRouter { null }
@@ -82,15 +82,14 @@ fun FeatureAHomeScreen() {
                 colors = TopAppBarDefaults.topAppBarColors().copy(containerColor = Color.Blue),
                 scrollBehavior = scrollBehavior
             )
-        },
-        containerColor = Color.Red
+        }
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = it.calculateTopPadding())
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
-            state = listState
+            state = vmState.lazyListState
         ) {
             item {
                 Column {
@@ -115,6 +114,15 @@ fun FeatureAHomeScreen() {
                         modifier = Modifier.testTag("to Login")
                     ) {
                         Text("to Login")
+                    }
+
+                    Button(
+                        onClick = {
+                            rootRouter.pushNew(MainStackScreens.Camera)
+                        },
+                        modifier = Modifier.testTag("to Camera")
+                    ) {
+                        Text("to Camera")
                     }
                 }
             }

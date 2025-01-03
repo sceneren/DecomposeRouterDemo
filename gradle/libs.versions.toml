@@ -9,7 +9,6 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
 
-
 serialization = "1.7.3"
 serialization-plugin = "2.0.20"
 
@@ -18,6 +17,7 @@ decompose-ext = "3.2.2"
 appcompat = "1.7.0"
 material = "1.12.0"
 orbit-mvi = "9.0.0"
+cameraView = "2.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +43,8 @@ decompose-ext = { module = "com.arkivanov.decompose:extensions-compose", version
 orbit-mvi-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-mvi" }
 orbit-mvi-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-mvi" }
 orbit-mvi-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-mvi" }
+
+camera-view = { module = "com.github.loquizgame:CameraView", version.ref = "cameraView" }
 
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext"]

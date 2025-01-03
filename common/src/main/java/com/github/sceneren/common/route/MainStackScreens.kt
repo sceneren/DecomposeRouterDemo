@@ -16,4 +16,7 @@ sealed class MainStackScreens {
     @Serializable
     data object Detail : MainStackScreens()
 
+    @Serializable
+    data object Camera : MainStackScreens()
+
 }

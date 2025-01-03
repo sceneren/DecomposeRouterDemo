@@ -1,10 +1,8 @@
 package com.github.sceneren.decomposerouterdemo
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -16,23 +14,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathMeasure
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.router.pages.select
 import com.arkivanov.decompose.router.pages.selectFirst
-import com.github.sceneren.common.composable.BarShape
+import com.arkivanov.decompose.router.pages.selectLast
 import com.github.sceneren.common.composable.ConvexBottomBar
 import com.github.sceneren.common.route.MainPagerScreens
 import com.github.sceneren.featurea.home.FeatureAHomeScreen
@@ -68,6 +57,9 @@ fun MainScreen() {
 
                 Column(
                     modifier = Modifier
+                        .clickable {
+                            pager.selectFirst()
+                        }
                         .weight(1f)
                         .padding(top = 20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,6 +78,9 @@ fun MainScreen() {
                 }
                 Column(
                     modifier = Modifier
+                        .clickable {
+                            pager.select(1)
+                        }
                         .weight(1f)
                         .padding(top = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -102,6 +97,9 @@ fun MainScreen() {
                 }
                 Column(
                     modifier = Modifier
+                        .clickable {
+                            pager.selectLast()
+                        }
                         .weight(1f)
                         .padding(top = 20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
