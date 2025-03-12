@@ -52,7 +52,9 @@ fun MainScreen() {
                 modifier = Modifier
                     .navigationBarsPadding()
                     .fillMaxWidth(),
-                backGroundColor = Color.Blue
+                backgroundColor = Color.Blue,
+                borderColor = Color.Red,
+                borderWidth = 0.5.dp
             ) {
 
                 Column(
