@@ -1,21 +1,24 @@
 [versions]
 agp = "8.7.3"
-kotlin = "2.1.0"
+kotlin = "2.1.10"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.02.00"
+composeBom = "2025.03.01"
 
-serialization = "1.7.3"
-serialization-plugin = "2.0.21"
+serialization = "1.8.0"
+serialization-plugin = "2.1.10"
 
 decompose-router = "0.9.0"
 decompose-ext = "3.2.2"
 orbit-mvi = "9.0.0"
-cameraView = "2.7.8"
+cameraView = "2.7.2"
+
+cameraX = "1.5.0-alpha06"
+kotlinx-collections-immutable = "0.3.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,19 +37,32 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 
 decompose-router = { module = "io.github.xxfast:decompose-router", version.ref = "decompose-router" }
 decompose-ext = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose-ext" }
+decompose-ext-experimental = { module = "com.arkivanov.decompose:extensions-compose-experimental", version.ref = "decompose-ext" }
 
 orbit-mvi-core = { module = "org.orbit-mvi:orbit-core", version.ref = "orbit-mvi" }
 orbit-mvi-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit-mvi" }
 orbit-mvi-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbit-mvi" }
 
-camera-view = { module = "com.github.loquizgame:CameraView", version.ref = "cameraView" }
+camera-view = { module = "com.otaliastudios:cameraview", version.ref = "cameraView" }
+
+camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraX" }
+camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraX" }
+camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraX" }
+camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraX" }
+camera-compose = { module = "androidx.camera:camera-compose", version.ref = "cameraX" }
+camera-viewfinder-compose = { module = "androidx.camera:camera-viewfinder-compose", version = "1.0.0-alpha02" }
+camera-extensions = { module = "androidx.camera:camera-extensions", version = "cameraX" }
+camera-effects = { module = "androidx.camera:camera-effects", version = "cameraX" }
+camera-view2 = { module = "androidx.camera:camera-view", version = "cameraX" }
 
 [bundles]
-decompose-router = ["decompose-router", "decompose-ext"]
+decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]
 orbit-mvi = ["orbit-mvi-core", "orbit-mvi-viewmodel", "orbit-mvi-compose"]
+cameraX = ["camera-core", "camera-camera2", "camera-lifecycle", "camera-video", "camera-compose", "camera-extensions", "camera-effects", "camera-view2"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

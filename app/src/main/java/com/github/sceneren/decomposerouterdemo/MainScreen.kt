@@ -1,6 +1,9 @@
 package com.github.sceneren.decomposerouterdemo
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,8 +35,9 @@ import io.github.xxfast.decompose.router.pages.Router
 import io.github.xxfast.decompose.router.pages.pagesOf
 import io.github.xxfast.decompose.router.pages.rememberRouter
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun MainScreen() {
+fun SharedTransitionScope.MainScreen() {
     val pager: Router<MainPagerScreens> = rememberRouter {
         pagesOf(
             MainPagerScreens.Page1,
@@ -122,6 +126,7 @@ fun MainScreen() {
             }
         }
     ) { innerPadding ->
+
         RoutedContent(
             modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
             router = pager,
@@ -142,5 +147,6 @@ fun MainScreen() {
                 MainPagerScreens.Page3 -> FeatureCHomeScreen()
             }
         }
+
     }
 }

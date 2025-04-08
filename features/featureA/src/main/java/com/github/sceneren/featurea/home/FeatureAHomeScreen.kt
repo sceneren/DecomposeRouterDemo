@@ -1,6 +1,9 @@
 package com.github.sceneren.featurea.home
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,14 +12,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -39,16 +44,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.pushNew
+import com.github.sceneren.common.route.LocalAnimatedVisibilityScope
 import com.github.sceneren.common.route.LocalStackRouter
 import com.github.sceneren.common.route.MainStackScreens
-import io.github.xxfast.decompose.router.rememberOnRoute
 import io.github.xxfast.decompose.router.slot.RoutedContent
 import io.github.xxfast.decompose.router.slot.Router
 import io.github.xxfast.decompose.router.slot.rememberRouter
 import kotlinx.serialization.Serializable
 import org.orbitmvi.orbit.compose.collectAsState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun FeatureAHomeScreen() {
 
@@ -65,11 +70,13 @@ fun FeatureAHomeScreen() {
 
     val rootRouter = LocalStackRouter.current
 
+//    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+
     LifecycleStartEffect(rootRouter) {
-        Log.e("FeatureAHomeScreen", "FeatureAHomeScreen==>Start")
         onStopOrDispose { }
     }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(
         topBar = {
             MediumTopAppBar(
@@ -91,6 +98,22 @@ fun FeatureAHomeScreen() {
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             state = vmState.lazyListState
         ) {
+
+            item {
+
+                Icon(
+                    modifier = Modifier
+//                        .sharedBounds(
+//                            sharedContentState = rememberSharedContentState(key = "image"),
+//                            animatedVisibilityScope = animatedVisibilityScope
+//                        )
+                        .size(20.dp),
+                    imageVector = Icons.Outlined.AccountCircle,
+                    tint = Color.Red,
+                    contentDescription = null
+                )
+            }
+
             item {
                 Column {
                     Button(

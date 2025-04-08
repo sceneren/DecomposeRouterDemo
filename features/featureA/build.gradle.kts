@@ -61,4 +61,5 @@ dependencies {
     implementation(libs.bundles.orbit.mvi)
 
     implementation(libs.camera.view)
+    implementation(libs.bundles.cameraX)
 }
