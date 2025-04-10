@@ -71,7 +71,7 @@ fun CameraScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it.calculateBottomPadding())
+                .padding(bottom = it.calculateBottomPadding())
         ) {
             saveableStateHolder.SaveableStateProvider("camera") {
                 CameraXViewContent()
@@ -98,8 +98,8 @@ fun CameraXViewContent() {
             )
         }
 
-        Button(onClick = {}) {
-
+        Button(modifier = Modifier.align(Alignment.BottomCenter), onClick = {}) {
+            Text("开始录制")
         }
     }
 
