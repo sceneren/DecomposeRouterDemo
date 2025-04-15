@@ -62,4 +62,5 @@ dependencies {
 
     implementation(libs.camera.view)
     implementation(libs.bundles.cameraX)
+    implementation(libs.i18n)
 }

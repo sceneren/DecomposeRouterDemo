@@ -1,5 +1,6 @@
 package com.github.sceneren.featurea.camera
 
+import android.icu.text.MessageFormat
 import android.util.Log
 import android.view.ViewGroup
 import androidx.camera.compose.CameraXViewfinder
@@ -8,8 +9,12 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -34,15 +39,18 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.github.sceneren.featurea.R
 import com.otaliastudios.cameraview.CameraException
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.CameraView
@@ -58,10 +66,18 @@ import java.util.Date
 import java.util.Locale
 import kotlin.concurrent.getOrSet
 
+@Preview
 @Composable
 fun CameraScreen() {
+    val context = LocalContext.current
     LifecycleStartEffect("CameraScreen") {
         Log.e("CameraScreen", "CameraScreen")
+        val testStr = androidx.core.i18n.MessageFormat.format(
+            context = context,
+            id = R.string.test,
+            mapOf("t1" to "aa")
+        )
+        Log.e("testStr", testStr)
         onStopOrDispose { }
     }
 
@@ -87,10 +103,19 @@ fun CameraXViewContent() {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val textSize = LocalDensity.current.run { 20.sp.toPx() }
+    LaunchedEffect(textSize) {
+        viewModel.setTextSize(textSize)
+    }
+
     LaunchedEffect(lifecycleOwner) {
         viewModel.bindToCamera(context.applicationContext, lifecycleOwner)
     }
-    Box {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(9f / 16f)
+    ) {
         state.surfaceRequest?.let {
             CameraView2(
                 modifier = Modifier.fillMaxSize(),
@@ -98,9 +123,22 @@ fun CameraXViewContent() {
             )
         }
 
-        Button(modifier = Modifier.align(Alignment.BottomCenter), onClick = {}) {
-            Text("开始录制")
+        Text(
+            modifier = Modifier.align(Alignment.Center).offset(y = 20.dp),
+            text = "Watermark ${System.currentTimeMillis()}",
+            color = Color.Red,
+            fontSize = 20.sp
+        )
+
+        Row(modifier = Modifier.align(Alignment.BottomCenter)) {
+            Button(onClick = {}) {
+                Text("开始录制")
+            }
+            Button(onClick = { viewModel.takePhoto() }) {
+                Text("拍照")
+            }
         }
+
     }
 
 

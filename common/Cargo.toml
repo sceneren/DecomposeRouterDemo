@@ -1,0 +1,12 @@
+[package]
+name = "common"
+version = "0.2.0"
+edition = "2024"
+
+[dependencies]
+uniffi = "0.28.3"
+
+[lib]
+crate-type = ["cdylib"]
+# Put this only if you moved lib.rs.
+path = "src/main/rust/lib.rs"

@@ -1,13 +1,14 @@
 [versions]
 agp = "8.7.3"
 kotlin = "2.1.10"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.03.01"
+composeBom = "2025.04.00"
+i18n = "1.0.0"
 
 serialization = "1.8.0"
 serialization-plugin = "2.1.10"
@@ -19,6 +20,8 @@ cameraView = "2.7.2"
 
 cameraX = "1.5.0-alpha06"
 kotlinx-collections-immutable = "0.3.8"
+
+gobley = "0.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,9 +58,11 @@ camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = 
 camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraX" }
 camera-compose = { module = "androidx.camera:camera-compose", version.ref = "cameraX" }
 camera-viewfinder-compose = { module = "androidx.camera:camera-viewfinder-compose", version = "1.0.0-alpha02" }
-camera-extensions = { module = "androidx.camera:camera-extensions", version = "cameraX" }
-camera-effects = { module = "androidx.camera:camera-effects", version = "cameraX" }
-camera-view2 = { module = "androidx.camera:camera-view", version = "cameraX" }
+camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraX" }
+camera-effects = { module = "androidx.camera:camera-effects", version.ref = "cameraX" }
+camera-view2 = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
+
+i18n = { module = "androidx.core:core-i18n", version.ref = "i18n" }
 
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]
@@ -70,3 +75,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization-plugin" }
+gobley-cargo = { id = "dev.gobley.cargo", version.ref = "gobley" }
+gobley-uniffi = { id = "dev.gobley.uniffi", version.ref = "gobley" }
