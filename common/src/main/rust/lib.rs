@@ -1,34 +1,34 @@
 /// This exports this Rust function to the Kotlin side.
+mod encryption;
+use encryption::decrypt_base_string;
+
 #[uniffi::export]
 fn add(lhs: i32, rhs: i32) -> i32 {
     lhs + rhs
 }
 
 #[uniffi::export]
-fn get_app_key() -> String{
-   let s = "hello app key";
-   return s.to_string();
-}
-
-/// This exports this Rust type to the Kotlin side.
-#[derive(uniffi::Object)]
-struct Greeter {
-    greeting: String
+fn decrypt_string(encrypted_data:String ) ->String{
+   
+   return decrypt_base_string(encrypted_data).unwrap();
 }
 
 #[uniffi::export]
-impl Greeter {
-   /// Define a constructor to be used on the Kotlin side.
-   #[uniffi::constructor]
-   fn new(greeting: String) -> Self {
-      Self { greeting }
-   }
-
-   /// Define a method to be used on the Kotlin side.
-   fn greet(&self, name: String) -> String {
-      format!("{}, {name}!", self.greeting)
-   }
-}
+fn decrypt_string2(encrypted_data:String ) ->String{
+    let result= decrypt_base_string(encrypted_data);
+    match result {
+        Ok(data)=>{
+            let a = String::from("success:");
+            let b = data;
+            return a+&b;
+        },
+        Err(e)=>{
+            let a = String::from("fail:");
+            let b = e;
+            return a+&b;
+        }
+    }
+ }
 
 // This generates extra Rust code required by UniFFI.
 uniffi::setup_scaffolding!();
