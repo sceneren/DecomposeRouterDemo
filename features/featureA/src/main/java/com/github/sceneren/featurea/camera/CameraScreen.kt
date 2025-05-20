@@ -1,9 +1,12 @@
 package com.github.sceneren.featurea.camera
 
+import android.graphics.Canvas
 import android.icu.text.MessageFormat
+import android.os.Environment
 import android.util.Log
 import android.view.ViewGroup
 import androidx.camera.compose.CameraXViewfinder
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.SurfaceRequest
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
@@ -57,6 +60,14 @@ import com.otaliastudios.cameraview.CameraView
 import com.otaliastudios.cameraview.VideoResult
 import com.otaliastudios.cameraview.controls.Mode
 import com.otaliastudios.cameraview.overlay.OverlayLayout
+import com.ujizin.camposer.CameraPreview
+import com.ujizin.camposer.state.CamSelector
+import com.ujizin.camposer.state.ImageAnalysisBackpressureStrategy
+import com.ujizin.camposer.state.ImageCaptureResult
+import com.ujizin.camposer.state.ImageTargetSize
+import com.ujizin.camposer.state.rememberCamSelector
+import com.ujizin.camposer.state.rememberCameraState
+import com.ujizin.camposer.state.rememberImageAnalyzer
 import io.github.xxfast.decompose.router.rememberOnRoute
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
@@ -90,11 +101,60 @@ fun CameraScreen() {
                 .padding(bottom = it.calculateBottomPadding())
         ) {
             saveableStateHolder.SaveableStateProvider("camera") {
-                CameraXViewContent()
+                CamposerCamera(modifier = Modifier.fillMaxSize())
             }
 
         }
     }
+}
+
+@Composable
+fun CamposerCamera(modifier: Modifier = Modifier) {
+    val cameraState = rememberCameraState()
+    var camSelector by rememberCamSelector(CamSelector.Back)
+    val imageAnalyzer = if (cameraState.isImageAnalysisSupported) {
+        cameraState.rememberImageAnalyzer(
+            imageAnalysisBackpressureStrategy = ImageAnalysisBackpressureStrategy.KeepOnlyLatest, // optioanl, default is ImageAnalysisBackpressureStrategy.KeepOnlyLatest
+            imageAnalysisTargetSize = ImageTargetSize(AspectRatio.RATIO_16_9), // optional, default it's from cameraX's library
+            imageAnalysisImageQueueDepth = 0, // optional, default is 6, from cameraX's library,
+            analyze = { imageProxy ->
+                Log.e("imageAnalyzer", "imageProxy.width=${imageProxy.width}")
+                Log.e("imageAnalyzer", "imageProxy.height=${imageProxy.height}")
+                imageProxy.close()
+            } // image analyze callback
+        )
+    }else null
+
+    CameraPreview(
+        modifier = modifier,
+        cameraState = cameraState,
+        camSelector = camSelector,
+        imageAnalyzer = imageAnalyzer
+    ) {
+        // Camera Preview UI
+        Box(modifier = Modifier.fillMaxSize()) {
+            Button(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 20.dp),
+                onClick = {
+                    val path =
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
+                    val file = File("$path/TestCamera/test-${System.currentTimeMillis()}.jpg")
+                    cameraState.takePicture(file) {
+                        if (it is ImageCaptureResult.Success) {
+                            Log.e("CameraXVM", "onImageSaved")
+                        } else {
+                            Log.e("CameraXVM", "onImageFailed")
+                        }
+                    }
+                }) {
+                Text("拍照")
+            }
+        }
+
+    }
+
 }
 
 @Composable
@@ -124,7 +184,9 @@ fun CameraXViewContent() {
         }
 
         Text(
-            modifier = Modifier.align(Alignment.Center).offset(y = 20.dp),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(y = 20.dp),
             text = "Watermark ${System.currentTimeMillis()}",
             color = Color.Red,
             fontSize = 20.sp

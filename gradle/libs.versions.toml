@@ -1,27 +1,29 @@
 [versions]
 agp = "8.7.3"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
+lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.04.00"
+composeBom = "2025.04.01"
 i18n = "1.0.0"
 
 serialization = "1.8.0"
-serialization-plugin = "2.1.10"
+serialization-plugin = "2.1.20"
 
 decompose-router = "0.9.0"
 decompose-ext = "3.2.2"
 orbit-mvi = "9.0.0"
 cameraView = "2.7.2"
 
-cameraX = "1.5.0-alpha06"
+cameraX = "1.5.0-beta01"
 kotlinx-collections-immutable = "0.3.8"
 
 gobley = "0.2.0"
+
+camposer = "0.4.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -63,6 +65,8 @@ camera-effects = { module = "androidx.camera:camera-effects", version.ref = "cam
 camera-view2 = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
 
 i18n = { module = "androidx.core:core-i18n", version.ref = "i18n" }
+
+camposer = { module = "io.github.ujizin:camposer", version.ref = "camposer" }
 
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]

@@ -22,6 +22,7 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +48,12 @@ fun FeatureCHomeScreen() {
     val vm = rememberOnRoute { FeatureCVM() }
 
     val vmState by vm.collectAsState()
+
+    LaunchedEffect(vm::effect) {
+        vm.effect.collect {
+            Log.e("FeatureCHomeScreen", "FeatureCHomeScreen==>effect:$it")
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         SearchBar(

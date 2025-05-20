@@ -2,10 +2,21 @@ package com.github.sceneren.featurec.home
 
 import androidx.lifecycle.ViewModel
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
+sealed class FeatureC2Effect{
+    data class ShowToast(val message: String):FeatureC2Effect()
+}
+
 class FeatureCVM : ViewModel(), ContainerHost<FeatureCState, FeatureCEffect> {
+
+    private val _effect = MutableSharedFlow<FeatureC2Effect>()
+    val effect: SharedFlow<FeatureC2Effect> = _effect.asSharedFlow()
+
     override val container = container<FeatureCState, FeatureCEffect>(FeatureCState()) {
         intent {
             reduce {
@@ -31,6 +42,7 @@ class FeatureCVM : ViewModel(), ContainerHost<FeatureCState, FeatureCEffect> {
         reduce {
             state.copy(result = result)
         }
+        _effect.emit(FeatureC2Effect.ShowToast("计算成功"))
     }
 
     fun changeSearchText(text: String) = blockingIntent {
