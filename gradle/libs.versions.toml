@@ -23,8 +23,6 @@ kotlinx-collections-immutable = "0.3.8"
 
 gobley = "0.2.0"
 
-camposer = "0.4.4"
-
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -65,8 +63,6 @@ camera-effects = { module = "androidx.camera:camera-effects", version.ref = "cam
 camera-view2 = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
 
 i18n = { module = "androidx.core:core-i18n", version.ref = "i18n" }
-
-camposer = { module = "io.github.ujizin:camposer", version.ref = "camposer" }
 
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]

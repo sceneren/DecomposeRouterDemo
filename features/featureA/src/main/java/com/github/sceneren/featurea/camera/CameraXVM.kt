@@ -64,7 +64,6 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
         setSurfaceProvider { newSurfaceRequest ->
             intent {
                 reduce {
-                    newSurfaceRequest.camera.cameraControlInternal.sensorRect
                     state.copy(surfaceRequest = newSurfaceRequest)
                 }
             }
@@ -100,7 +99,6 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
 
         overlayEffect.clearOnDrawListener()
         overlayEffect.setOnDrawListener { frame ->
-            cameraPreviewUseCase.camera?.cameraControlInternal?.sensorRect
             val previewRect = cameraPreviewUseCase.viewPortCropRect
 
 
