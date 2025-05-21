@@ -98,38 +98,26 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
         )
 
         overlayEffect.clearOnDrawListener()
-        overlayEffect.setOnDrawListener { frame ->
-            val previewRect = cameraPreviewUseCase.viewPortCropRect
 
+        overlayEffect.setOnDrawListener { frame ->
 
             frame.overlayCanvas.let { canvas ->
+                canvas.save()
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+                // 应用传感器到缓冲区的转换矩阵
                 canvas.setMatrix(frame.sensorToBufferTransform)
-                canvas.drawColor(
-                    Color.TRANSPARENT,
-                    PorterDuff.Mode.CLEAR
-                )
-                Log.e("textSize3", "${canvas.width},${canvas.height}")
-                val matrix = Matrix()
-                matrix.postConcat(frame.sensorToBufferTransform)
-                matrix.postRotate(
-                    -frame.rotationDegrees.toFloat(),
-                    (canvas.width / 2f),
-                    (canvas.height / 2f)
-                )
-                previewRect?.let { rect ->
-                    Log.e("textSize3", "${rect}, ${canvas.width},${canvas.height}")
-                    canvas.setMatrix(matrix)
-                    val text = "Watermark ${System.currentTimeMillis()}"
-                    val centerX = canvas.width / 2f
-                    val centerY = canvas.height / 2f
-                    canvas.drawText(
-                        text,
-                        centerX,
-                        centerY,
-                        textPaint
-                    )
-                }
+                // 从中心点旋转canvas画布，使绘制方向变成水平
+                canvas.rotate(-90f, canvas.width / 2f, canvas.height / 2f)
+                // 获取可绘制区域
+                val rect = canvas.clipBounds
 
+                val text = "Watermark ${System.currentTimeMillis()}"
+                canvas.drawText(
+                    text,
+                    rect.left.toFloat(),
+                    rect.top.toFloat(),
+                    textPaint
+                )
             }
             true
         }
@@ -177,6 +165,23 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
                 }
             }
         )
+    }
+
+    fun startRecord() {
+        val path =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath
+        if (!File("$path/TestCamera").exists()) {
+            File("$path/TestCamera").mkdirs()
+        }
+
+        val outputFileOptions = OutputFileOptions.Builder(
+            File("$path/TestCamera/test-${System.currentTimeMillis()}.mp4")
+        ).build()
+
+    }
+
+    public override fun onCleared() {
+        super.onCleared()
     }
 
 }

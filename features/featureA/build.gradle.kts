@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.bundles.decompose.router)
     implementation(libs.bundles.orbit.mvi)
 
-    implementation(libs.camera.view)
     implementation(libs.bundles.cameraX)
     implementation(libs.i18n)
 }
