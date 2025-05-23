@@ -1,17 +1,20 @@
 package com.github.sceneren.featurea.camera
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PorterDuff
+import android.graphics.RectF
 import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import android.util.Rational
 import android.view.Surface
+import androidx.annotation.RequiresPermission
 import androidx.camera.core.CameraControl
 import androidx.camera.core.CameraEffect.IMAGE_CAPTURE
 import androidx.camera.core.CameraEffect.PREVIEW
@@ -27,19 +30,34 @@ import androidx.camera.core.ViewPort.FILL_CENTER
 import androidx.camera.effects.OverlayEffect
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
+import androidx.camera.video.FileOutputOptions
 import androidx.camera.video.Recorder
+import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
+import androidx.camera.video.VideoRecordEvent
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toRectF
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import java.io.File
 import java.util.concurrent.Executors
 
 class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
+    companion object {
+        private const val TAG = "CameraController"
+    }
 
-    override val container = container<CameraXState, Nothing>(CameraXState())
+    override val container = container<CameraXState, Nothing>(CameraXState()) {
+        setCurrentTime()
+    }
 
     private val textPaint = Paint().apply {
         this.color = Color.RED
@@ -52,10 +70,6 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
         HandlerThread("effect thread").apply {
             start()
         }
-    }
-
-    fun setTextSize(textSize: Float) {
-        textPaint.textSize = textSize
     }
 
     @SuppressLint("RestrictedApi")
@@ -79,23 +93,31 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
         ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .build()
 
+    private var processCameraProvider: ProcessCameraProvider? = null
+
+    private val effectHandler = Handler(handlerThread.looper)
+
+    private val overlayEffect = OverlayEffect(
+        PREVIEW or VIDEO_CAPTURE or IMAGE_CAPTURE,
+        0,
+        effectHandler
+    ) {}
+
+    private val useCaseGroupBuilder = UseCaseGroup.Builder()
+        .setViewPort(ViewPort.Builder(Rational(9, 16), Surface.ROTATION_0).apply {
+            setScaleType(FILL_CENTER)
+        }.build())
+        .addUseCase(cameraPreviewUseCase)
+        .addUseCase(videoCapture)
+        .addUseCase(imageCapture)
+        .addEffect(overlayEffect)
+
     @SuppressLint("RestrictedApi")
     suspend fun bindToCamera(appContext: Context, lifecycleOwner: LifecycleOwner) {
-        val processCameraProvider = ProcessCameraProvider.awaitInstance(appContext)
-
-        val effectHandler = Handler(handlerThread.looper)
-
-        val overlayEffect = OverlayEffect(
-            PREVIEW or VIDEO_CAPTURE or IMAGE_CAPTURE,
-            0,
-            effectHandler
-        ) {}
-
-        val cameraTimeEffect = CameraTimeEffect(
-            targets = PREVIEW or VIDEO_CAPTURE or IMAGE_CAPTURE,
-            textSize = textPaint.textSize,
-            preview = cameraPreviewUseCase
-        )
+        if (processCameraProvider == null) {
+            processCameraProvider = ProcessCameraProvider.awaitInstance(appContext)
+        }
+        processCameraProvider ?: return
 
         overlayEffect.clearOnDrawListener()
 
@@ -111,27 +133,24 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
                 // 获取可绘制区域
                 val rect = canvas.clipBounds
 
-                val text = "Watermark ${System.currentTimeMillis()}"
-                canvas.drawText(
-                    text,
-                    rect.left.toFloat(),
-                    rect.top.toFloat(),
-                    textPaint
+                Log.e("rect", "$rect===${rect.width()},${rect.height()}")
+                Log.e("canvas", "${canvas.width},  ${canvas.height}")
+                val watermarkBitmap = container.stateFlow.value.waterMarkBitmap
+                Log.e(
+                    "bitmap",
+                    "${watermarkBitmap?.width},  ${watermarkBitmap?.height}"
                 )
+                if (watermarkBitmap?.isRecycled == false) {
+                    val watermarkRect = rect.toRectF()
+                    canvas.drawBitmap(watermarkBitmap, null, watermarkRect, textPaint)
+                }else{
+                    Log.e("watermarkBitmap","watermarkBitmap==isRecycled")
+                }
             }
             true
         }
 
-        val useCaseGroupBuilder = UseCaseGroup.Builder()
-            .setViewPort(ViewPort.Builder(Rational(9, 16), Surface.ROTATION_0).apply {
-                setScaleType(FILL_CENTER)
-            }.build())
-            .addUseCase(cameraPreviewUseCase)
-            .addUseCase(videoCapture)
-            .addUseCase(imageCapture)
-            .addEffect(cameraTimeEffect)
-
-        processCameraProvider.bindToLifecycle(
+        processCameraProvider?.bindToLifecycle(
             lifecycleOwner, DEFAULT_BACK_CAMERA, useCaseGroupBuilder.build()
         )
         cameraControl = cameraPreviewUseCase.camera?.cameraControl
@@ -139,7 +158,7 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
         try {
             awaitCancellation()
         } finally {
-            processCameraProvider.unbindAll()
+            processCameraProvider?.unbindAll()
             cameraControl = null
         }
     }
@@ -167,48 +186,105 @@ class CameraXVM() : ViewModel(), ContainerHost<CameraXState, Nothing> {
         )
     }
 
-    fun startRecord() {
+    private var recording: Recording? = null
+
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
+    fun switchRecord(context: Context) = intent {
+        if (state.isRecording) {
+            stopRecord()
+        } else {
+            startRecord(context)
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
+    private fun startRecord(context: Context) = intent {
         val path =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath
         if (!File("$path/TestCamera").exists()) {
             File("$path/TestCamera").mkdirs()
         }
 
-        val outputFileOptions = OutputFileOptions.Builder(
+
+        val outputFileOptions = FileOutputOptions.Builder(
             File("$path/TestCamera/test-${System.currentTimeMillis()}.mp4")
         ).build()
 
+        recording = recorder.prepareRecording(context, outputFileOptions)
+            .start(ContextCompat.getMainExecutor(context)) { videoRecordEvent ->
+                when (videoRecordEvent) {
+                    is VideoRecordEvent.Start -> {
+                        // 开始录制
+                        Log.e(TAG, "开始录制")
+                        intent {
+                            reduce {
+                                state.copy(isRecording = true)
+                            }
+                        }
+                    }
+
+                    is VideoRecordEvent.Pause -> {
+                        // 录制暂停
+                        Log.e(TAG, "Pause")
+                    }
+
+                    is VideoRecordEvent.Resume -> {
+                        // 录制恢复
+                        Log.e(TAG, "Resume")
+                    }
+
+                    is VideoRecordEvent.Finalize -> {
+                        // 录制完成
+                        Log.e(TAG, "Finalize")
+                        intent {
+                            reduce {
+                                state.copy(isRecording = false)
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+    }
+
+    private fun stopRecord() {
+        recording?.stop()
+        recording = null
+    }
+
+    private fun setCurrentTime() = intent {
+        flow {
+            while (true) {
+                emit(System.currentTimeMillis().timestampToFormattedDate())
+                delay(500)
+            }
+        }.onEach {
+            reduce {
+                state.copy(currentTime = it)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun setWatermarkBitmap(bitmap: Bitmap?) = intent {
+        //state.waterMarkBitmap?.recycle()
+        reduce {
+            state.copy(waterMarkBitmap = bitmap)
+        }
+    }
+
+    fun setDeviceRotation(angle: Float) = intent {
+        reduce {
+            state.copy(deviceRotation = angle)
+        }
     }
 
     public override fun onCleared() {
+        intent {
+            state.waterMarkBitmap?.recycle()
+        }
         super.onCleared()
     }
 
-}
-
-fun applyScaleCrop(
-    matrix: Matrix,
-    imageWidth: Float,
-    imageHeight: Float,
-    targetWidth: Float,
-    targetHeight: Float
-) {
-    // 计算缩放比例
-    val scaleX = targetWidth / imageWidth
-    val scaleY = targetHeight / imageHeight
-    val scale = scaleX.coerceAtLeast(scaleY) // 使用较大的比例
-
-    // 创建缩放矩阵
-    matrix.postScale(scale, scale)
-
-    // 计算缩放后的图像尺寸
-    val scaledWidth = imageWidth * scale
-    val scaledHeight = imageHeight * scale
-
-    // 计算平移量，使图像居中
-    val dx = (targetWidth - scaledWidth) / 2f
-    val dy = (targetHeight - scaledHeight) / 2f
-
-    // 创建平移矩阵
-    matrix.postTranslate(dx, dy)
 }

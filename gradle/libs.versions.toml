@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.3"
+agp = "8.10.0"
 kotlin = "2.1.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -21,6 +21,7 @@ cameraX = "1.5.0-beta01"
 kotlinx-collections-immutable = "0.3.8"
 
 gobley = "0.2.0"
+capturable = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,12 +55,12 @@ camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cam
 camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraX" }
 camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraX" }
 camera-compose = { module = "androidx.camera:camera-compose", version.ref = "cameraX" }
-camera-viewfinder-compose = { module = "androidx.camera:camera-viewfinder-compose", version = "1.0.0-alpha02" }
 camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraX" }
 camera-effects = { module = "androidx.camera:camera-effects", version.ref = "cameraX" }
 camera-view2 = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
 
 i18n = { module = "androidx.core:core-i18n", version.ref = "i18n" }
+capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
 
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]

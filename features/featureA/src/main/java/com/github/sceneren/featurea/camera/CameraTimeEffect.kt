@@ -33,7 +33,7 @@ class CameraTimeEffect(
 
     init {
         setOnDrawListener { frame ->
-
+            Log.e("frame","frame==>${frame.rotationDegrees}")
             val sensorToUi = preview.sensorToBufferTransformMatrix
             val rect = preview.viewPortCropRect ?: return@setOnDrawListener true
             if (sensorToUi != null) {
