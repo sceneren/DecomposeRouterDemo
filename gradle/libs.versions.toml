@@ -22,6 +22,9 @@ kotlinx-collections-immutable = "0.3.8"
 
 gobley = "0.2.0"
 capturable = "2.1.0"
+camposer = "0.4.4"
+accompanist-permissions = "0.37.3"
+xlog = "1.11.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,7 +64,9 @@ camera-view2 = { module = "androidx.camera:camera-view", version.ref = "cameraX"
 
 i18n = { module = "androidx.core:core-i18n", version.ref = "i18n" }
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
-
+camposer = { module = "io.github.ujizin:camposer", version.ref = "camposer" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions" }
+xlog = { group = "com.elvishew", name = "xlog", version.ref = "xlog" }
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]
 orbit-mvi = ["orbit-mvi-core", "orbit-mvi-viewmodel", "orbit-mvi-compose"]

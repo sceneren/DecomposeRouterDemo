@@ -64,4 +64,6 @@ dependencies {
     implementation(libs.i18n)
 
     implementation(libs.capturable)
+    implementation(libs.camposer)
+    implementation(libs.accompanist.permissions)
 }

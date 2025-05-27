@@ -19,4 +19,7 @@ sealed class MainStackScreens {
     @Serializable
     data object Camera : MainStackScreens()
 
+    @Serializable
+    data object Camposer : MainStackScreens()
+
 }

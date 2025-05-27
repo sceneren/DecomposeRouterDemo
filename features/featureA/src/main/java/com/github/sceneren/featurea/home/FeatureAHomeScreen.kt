@@ -147,6 +147,15 @@ fun FeatureAHomeScreen() {
                     ) {
                         Text("to Camera")
                     }
+
+                    Button(
+                        onClick = {
+                            rootRouter.pushNew(MainStackScreens.Camposer)
+                        },
+                        modifier = Modifier.testTag("to Camposer")
+                    ) {
+                        Text("to Camposer")
+                    }
                 }
             }
 

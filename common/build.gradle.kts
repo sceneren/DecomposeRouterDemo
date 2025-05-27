@@ -63,4 +63,5 @@ dependencies {
     implementation(libs.bundles.orbit.mvi)
 
     implementation(libs.kotlinx.collections.immutable)
+    api(libs.xlog)
 }
