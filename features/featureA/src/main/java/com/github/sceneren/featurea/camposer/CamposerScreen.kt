@@ -1,20 +1,13 @@
 package com.github.sceneren.featurea.camposer
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Environment
-import android.provider.MediaStore
-import androidx.annotation.RequiresApi
 import androidx.camera.core.AspectRatio
 import androidx.camera.video.FileOutputOptions
-import androidx.camera.video.MediaStoreOutputOptions
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -25,16 +18,13 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
-import androidx.core.os.EnvironmentCompat
 import com.elvishew.xlog.XLog
-import com.github.sceneren.featurea.camera.timestampToFormattedDate
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.ujizin.camposer.CameraPreview
