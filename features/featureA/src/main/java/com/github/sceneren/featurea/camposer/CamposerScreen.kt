@@ -45,8 +45,8 @@ fun CamposerScreen() {
     // 1. 创建并记住多个权限的状态
     val permissionsState = rememberMultiplePermissionsState(
         permissions = listOf(
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,
         )
     )
 
@@ -81,7 +81,7 @@ fun CamposerScreen() {
 
 }
 
-@androidx.annotation.RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+@androidx.annotation.RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable
 fun CamposerScreenContent() {
     val cameraState = rememberCameraState()
@@ -91,8 +91,6 @@ fun CamposerScreenContent() {
     var captureMode by remember { mutableStateOf(CaptureMode.Image) }
 
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val contentResolver = context.contentResolver
 
     Scaffold {
         Box(
