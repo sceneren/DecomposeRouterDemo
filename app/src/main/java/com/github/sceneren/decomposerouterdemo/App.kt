@@ -9,9 +9,5 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         XLog.init(LogLevel.ALL)
-        Thread.setDefaultUncaughtExceptionHandler { t, e ->
-            e.printStackTrace()
-            exitProcess(0)
-        }
     }
 }

@@ -2,6 +2,8 @@ package com.github.sceneren.common.route
 
 import kotlinx.serialization.Serializable
 
+interface NeedLogin
+
 @Serializable
 sealed class MainStackScreens {
     @Serializable
@@ -11,7 +13,7 @@ sealed class MainStackScreens {
     data object Main : MainStackScreens()
 
     @Serializable
-    data object Login : MainStackScreens()
+    data class Login(val loginSuccessRoute: MainStackScreens? = null) : MainStackScreens()
 
     @Serializable
     data object Detail : MainStackScreens()

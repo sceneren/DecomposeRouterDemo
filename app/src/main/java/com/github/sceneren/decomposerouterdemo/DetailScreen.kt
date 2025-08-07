@@ -24,16 +24,16 @@ import com.github.sceneren.common.route.LocalAnimatedVisibilityScope
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.DetailScreen() {
-    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+    //val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
     Scaffold { innerPadding ->
 
         Column {
             Icon(
                 modifier = Modifier
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "image1"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    )
+//                    .sharedBounds(
+//                        sharedContentState = rememberSharedContentState(key = "image1"),
+//                        animatedVisibilityScope = animatedVisibilityScope
+//                    )
                     .align(Alignment.CenterHorizontally)
                     .size(60.dp),
                 imageVector = Icons.Outlined.AccountCircle,

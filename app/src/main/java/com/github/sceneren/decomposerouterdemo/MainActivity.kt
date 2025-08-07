@@ -16,9 +16,11 @@ import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.github.sceneren.common.route.LocalStackRouter
 import com.github.sceneren.common.route.MainStackScreens
+import com.github.sceneren.common.route.NeedLogin
 import com.github.sceneren.decomposerouterdemo.ui.theme.DecomposeRouterDemoTheme
 import com.github.sceneren.featurea.camera.CameraScreen
 import com.github.sceneren.featurea.camposer.CamposerScreen
@@ -30,8 +32,11 @@ import io.github.xxfast.decompose.router.stack.RoutedContent
 import io.github.xxfast.decompose.router.stack.Router
 import io.github.xxfast.decompose.router.stack.rememberRouter
 
+
 class MainActivity : ComponentActivity() {
+
     @OptIn(ExperimentalDecomposeApi::class, ExperimentalSharedTransitionApi::class)
+    @androidx.annotation.RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -40,6 +45,8 @@ class MainActivity : ComponentActivity() {
         val rootRouterContext: RouterContext = defaultRouterContext()
         setContent {
             Surface {
+
+
 
                 DecomposeExperimentFlags.duplicateConfigurationsEnabled = true
 
@@ -66,11 +73,11 @@ class MainActivity : ComponentActivity() {
                                         when (child.configuration) {
                                             MainStackScreens.Splash -> fade()
                                             MainStackScreens.Main -> fade()
-                                            MainStackScreens.Login -> slide(orientation = Orientation.Vertical)
+                                            is MainStackScreens.Login -> slide(orientation = Orientation.Vertical)
                                             else -> slide()
                                         }
                                     }
-                                ) { screen ->
+                                ) @androidx.annotation.RequiresPermission(android.Manifest.permission.RECORD_AUDIO) { screen ->
                                     Log.e(
                                         "MainActivity",
                                         "MainStackScreens==>$screen==>${screen.hashCode()}"
@@ -87,7 +94,7 @@ class MainActivity : ComponentActivity() {
 
                                         MainStackScreens.Detail -> DetailScreen()
 
-                                        MainStackScreens.Login -> LoginScreen()
+                                        is MainStackScreens.Login -> LoginScreen()
                                         MainStackScreens.Camera -> {
                                             Log.e("MainActivity", "MainStackScreens.Camera")
                                             CameraScreen()

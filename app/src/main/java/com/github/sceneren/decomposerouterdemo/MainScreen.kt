@@ -28,6 +28,7 @@ import com.arkivanov.decompose.router.pages.selectLast
 import com.github.sceneren.common.composable.ConvexBottomBar
 import com.github.sceneren.common.route.MainPagerScreens
 import com.github.sceneren.featurea.home.FeatureAHomeScreen
+import com.github.sceneren.featurea.home.FeatureAVM
 import com.github.sceneren.featureb.home.FeatureBHomeScreen
 import com.github.sceneren.featurec.home.FeatureCHomeScreen
 import io.github.xxfast.decompose.router.pages.RoutedContent
@@ -38,6 +39,7 @@ import io.github.xxfast.decompose.router.pages.rememberRouter
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.MainScreen() {
+
     val pager: Router<MainPagerScreens> = rememberRouter {
         pagesOf(
             MainPagerScreens.Page1,
