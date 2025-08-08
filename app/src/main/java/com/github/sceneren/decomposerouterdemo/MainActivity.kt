@@ -25,6 +25,7 @@ import com.github.sceneren.decomposerouterdemo.ui.theme.DecomposeRouterDemoTheme
 import com.github.sceneren.featurea.camera.CameraScreen
 import com.github.sceneren.featurea.camposer.CamposerScreen
 import com.github.sceneren.featurea.ksoup.KsoupScreen
+import com.github.sceneren.featurea.webview.WebviewScreen
 import com.github.sceneren.login.LoginScreen
 import io.github.xxfast.decompose.router.LocalRouterContext
 import io.github.xxfast.decompose.router.RouterContext
@@ -104,6 +105,9 @@ class MainActivity : ComponentActivity() {
                                         MainStackScreens.Camposer -> CamposerScreen()
 
                                         MainStackScreens.Ksoup -> KsoupScreen()
+
+                                        MainStackScreens.Webview -> WebviewScreen()
+
                                     }
                                 }
                             }

@@ -162,6 +162,15 @@ fun FeatureAHomeScreen() {
                     ) {
                         Text("Ksoup Usage")
                     }
+
+                    Button(
+                        onClick = {
+                            rootRouter.pushNew(MainStackScreens.Webview)
+                        },
+                        modifier = Modifier.testTag("Webview Usage")
+                    ) {
+                        Text("Webview Usage")
+                    }
                 }
             }
 

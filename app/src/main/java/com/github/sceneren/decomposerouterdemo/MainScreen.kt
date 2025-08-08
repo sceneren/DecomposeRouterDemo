@@ -1,7 +1,6 @@
 package com.github.sceneren.decomposerouterdemo
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
@@ -28,7 +27,6 @@ import com.arkivanov.decompose.router.pages.selectLast
 import com.github.sceneren.common.composable.ConvexBottomBar
 import com.github.sceneren.common.route.MainPagerScreens
 import com.github.sceneren.featurea.home.FeatureAHomeScreen
-import com.github.sceneren.featurea.home.FeatureAVM
 import com.github.sceneren.featureb.home.FeatureBHomeScreen
 import com.github.sceneren.featurec.home.FeatureCHomeScreen
 import io.github.xxfast.decompose.router.pages.RoutedContent

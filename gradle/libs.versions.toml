@@ -28,6 +28,8 @@ xlog = "1.11.1"
 
 ksoup = "0.2.5"
 
+webview = "2.0.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -73,6 +75,8 @@ xlog = { group = "com.elvishew", name = "xlog", version.ref = "xlog" }
 ksoup-base = { group = "com.fleeksoft.ksoup", name = "ksoup", version.ref = "ksoup" }
 ksoup-kotlinx = { group = "com.fleeksoft.ksoup", name = "ksoup-kotlinx", version.ref = "ksoup" }
 ksoup-network = { group = "com.fleeksoft.ksoup", name = "ksoup-network", version.ref = "ksoup" }
+
+webview = { group = "io.github.kevinnzou", name = "compose-webview-multiplatform", version.ref = "webview" }
 
 [bundles]
 decompose-router = ["decompose-router", "decompose-ext", "decompose-ext-experimental"]

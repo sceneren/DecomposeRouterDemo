@@ -27,4 +27,7 @@ sealed class MainStackScreens {
     @Serializable
     data object Ksoup : MainStackScreens()
 
+    @Serializable
+    data object Webview : MainStackScreens()
+
 }

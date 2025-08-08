@@ -85,5 +85,7 @@ dependencies {
 
     implementation(libs.kotlinx.collections.immutable)
     api(libs.xlog)
+
+    api(libs.webview)
     //api("wiki.scene.socket:SceneNettySocket:1.1.3")
 }
