@@ -24,4 +24,7 @@ sealed class MainStackScreens {
     @Serializable
     data object Camposer : MainStackScreens()
 
+    @Serializable
+    data object Ksoup : MainStackScreens()
+
 }

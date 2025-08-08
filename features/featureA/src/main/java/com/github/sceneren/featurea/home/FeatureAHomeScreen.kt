@@ -1,9 +1,6 @@
 package com.github.sceneren.featurea.home
 
-import android.util.Log
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +29,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +42,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.pushNew
-import com.github.sceneren.common.route.LocalAnimatedVisibilityScope
 import com.github.sceneren.common.route.LocalStackRouter
 import com.github.sceneren.common.route.MainStackScreens
 import io.github.xxfast.decompose.router.slot.RoutedContent
@@ -132,7 +129,7 @@ fun FeatureAHomeScreen() {
 
                     Button(
                         onClick = {
-                            rootRouter.pushNew(MainStackScreens.Login)
+                            rootRouter.pushNew(MainStackScreens.Login())
                         },
                         modifier = Modifier.testTag("to Login")
                     ) {
@@ -155,6 +152,15 @@ fun FeatureAHomeScreen() {
                         modifier = Modifier.testTag("to Camposer")
                     ) {
                         Text("to Camposer")
+                    }
+
+                    Button(
+                        onClick = {
+                            rootRouter.pushNew(MainStackScreens.Ksoup)
+                        },
+                        modifier = Modifier.testTag("Ksoup Usage")
+                    ) {
+                        Text("Ksoup Usage")
                     }
                 }
             }
@@ -246,7 +252,7 @@ private fun BottomSheet1Screen(
                 Button(
                     onClick = {
                         bottomSheet1Router.dismiss {
-                            rootRouter.pushNew(MainStackScreens.Login)
+                            rootRouter.pushNew(MainStackScreens.Login())
                         }
                     },
                 ) {

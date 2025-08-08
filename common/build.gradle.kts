@@ -1,3 +1,4 @@
+import gobley.gradle.cargo.dsl.android
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -44,6 +45,19 @@ kotlin {
         jvmTarget.set(JvmTarget.JVM_17)
         // You can also set it as a string, though the JvmTarget enum is preferred for type safety:
         // jvmTarget.set("11")
+    }
+}
+
+cargo {
+    builds.android {
+        variants {
+            buildTaskProvider.configure {
+                additionalEnvironment.put(
+                    "RUSTFLAGS",
+                    "-C link-args=-Wl,-z,max-page-size=16384",
+                )
+            }
+        }
     }
 }
 

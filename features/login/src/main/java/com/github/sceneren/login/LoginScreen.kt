@@ -27,7 +27,7 @@ import com.github.sceneren.common.route.MainStackScreens
 @Composable
 fun SharedTransitionScope.LoginScreen() {
     val rootRouter = LocalStackRouter.current
-    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+//    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -35,11 +35,10 @@ fun SharedTransitionScope.LoginScreen() {
         Icon(
             modifier = Modifier
                 .padding(top = 100.dp)
-                .sharedBounds(
-                    sharedContentState = rememberSharedContentState(key = "image"),
-                    animatedVisibilityScope = animatedVisibilityScope,
-                )
-
+//                .sharedBounds(
+//                    sharedContentState = rememberSharedContentState(key = "image"),
+//                    animatedVisibilityScope = animatedVisibilityScope,
+//                )
                 .size(20.dp)
                 .clickable {
                     rootRouter.pushNew(MainStackScreens.Detail)
