@@ -57,17 +57,11 @@ fun FeatureAHomeScreen() {
     val vm: FeatureAVM = viewModel()
     val vmState by vm.collectAsState()
 
-//    val listState = rememberOnRoute {
-//        LazyListState()
-//    }
-
     val dialogRouter: Router<DialogScreens> = rememberRouter { null }
     val bottomSheet1Router: Router<BottomSheet1Screens> = rememberRouter { null }
     val bottomSheet2Router: Router<BottomSheet2Screens> = rememberRouter { null }
 
     val rootRouter = LocalStackRouter.current
-
-//    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
 
     LifecycleStartEffect(rootRouter) {
         onStopOrDispose { }
@@ -99,12 +93,7 @@ fun FeatureAHomeScreen() {
             item {
 
                 Icon(
-                    modifier = Modifier
-//                        .sharedBounds(
-//                            sharedContentState = rememberSharedContentState(key = "image"),
-//                            animatedVisibilityScope = animatedVisibilityScope
-//                        )
-                        .size(20.dp),
+                    modifier = Modifier.size(20.dp),
                     imageVector = Icons.Outlined.AccountCircle,
                     tint = Color.Red,
                     contentDescription = null
